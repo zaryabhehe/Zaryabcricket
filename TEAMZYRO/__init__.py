@@ -25,16 +25,16 @@ def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)
 
 # ---------------------------- CONSTANTS ---------------------------------
-api_id = int(os.getenv("API_ID"))  # Fetch from environment variable
-api_hash = os.getenv("API_HASH")   # Fetch from environment variable
+api_id = os.getenv("API_ID", "")  # Fetch from environment variable
+api_hash = os.getenv("API_HASH", "")   # Fetch from environment variable
 
 TOKEN = os.getenv("TOKEN")          # Fetch from environment variable
 
 GLOG = os.getenv("GLOG", "HINATA_LOG_GC") # USERNAME ONLY
 CHARA_CHANNEL_ID = os.getenv("CHARA_CHANNEL_ID", "Zyro_arts") #USERNAME ONLY
-SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "") #USERNAME ONLY
+SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "-1002309742084") #USERNAME ONLY
 
-mongo_url = os.getenv("MONGO_URL", "-1002309742084")  # Fetch from environment variable
+mongo_url = os.getenv("MONGO_URL", "")  # Fetch from environment variable
 PHOTO_URL = [
     os.getenv("PHOTO_URL_1", "https://files.catbox.moe/7ccoub.jpg"),
     os.getenv("PHOTO_URL_2", "https://files.catbox.moe/7ccoub.jpg")
