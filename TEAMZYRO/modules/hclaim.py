@@ -15,7 +15,7 @@ async def format_time_delta(delta):
     return f"{int(hours)}h {int(minutes)}m {int(seconds)}s" if hours or minutes or seconds else "0s"
 
 # Fetch unique characters not yet claimed by the user
-async def get_unique_characters(user_id, target_rarities=['⚪️ Common', '🟠 Medium', '🔴 High'):
+async def get_unique_characters(user_id, target_rarities=['⚪️ Common', '🟠 Medium', '🔴 High']):
     try:
         # Get the already claimed character ids
         user_data = await user_collection.find_one({'id': user_id}, {'characters.id': 1})
