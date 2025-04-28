@@ -41,7 +41,7 @@ PHOTO_URL = [
 ]
 
 SUPPORT_CHAT = os.getenv("SUPPORT_CHAT", "https://t.me/TEAMZYRO")
-UPDATE_CHAT = os.getenv("UPDATE_CHAT", "https://t.me/TEAMZYRO")
+UPDATE_CHAT = os.getenv("UPDATE_CHAT", "https://t.me/ZyroBotCodes")
 
 SUDO = list(map(int, os.getenv("SUDO", "7577185215,5749187175").split(',')))
 OWNER_ID = int(os.getenv("OWNER_ID", "7638720582"))
