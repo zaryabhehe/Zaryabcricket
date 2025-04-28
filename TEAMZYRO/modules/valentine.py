@@ -3,9 +3,7 @@ from pyrogram import Client, filters, types as t
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime, timedelta
 from TEAMZYRO import ZYRO as bot
-from TEAMZYRO import user_collection, collection
-
-chat = "-1002465116955"
+from TEAMZYRO import user_collection, collection, SUPPORT_CHAT_ID as chat
 
 async def get_unique_characters(user_id, target_rarities):
     try:
