@@ -5,7 +5,7 @@ import time
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-from TEAMZYRO import app, GLOG  # Bot app import kar rahe hain
+from TEAMZYRO import *
 from TEAMZYRO.unit.zyro_help import HELP_DATA  
 
 NEXI_VID = [
