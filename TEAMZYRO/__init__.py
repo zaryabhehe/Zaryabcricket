@@ -30,7 +30,7 @@ api_hash = os.getenv("API_HASH", "b9c764ce47c010e1a887f19fea54f648")   # Fetch f
 
 TOKEN = os.getenv("TOKEN", "8090942786:AAFhBk6Kmcuam6DshPdllcl7choqxjoKloM")          # Fetch from environment variable
 
-GLOG = os.getenv("GLOG", "HINATA_LOG_GC") # USERNAME ONLY
+GLOG = os.getenv("GLOG", "Zlog12") # USERNAME ONLY
 CHARA_CHANNEL_ID = os.getenv("CHARA_CHANNEL_ID", "Zlog12") #USERNAME ONLY
 SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "-1002309742084") #USERNAME ONLY
 
