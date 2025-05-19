@@ -54,7 +54,7 @@ async def generate_start_message(client, message):
         [InlineKeyboardButton("GitHub", url="https://github.com/MrZyro/ZyroWaifu")]  # GitHub button added here
     ]
     
-    return InlineKeyboardMarkup(buttons)
+    return caption, InlineKeyboardMarkup(buttons)
 
 # 🔹 Start Command Handler
 @app.on_message(filters.command("start"))
