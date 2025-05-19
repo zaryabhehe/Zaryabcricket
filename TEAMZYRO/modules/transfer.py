@@ -3,7 +3,7 @@ from pyrogram.types import Message
 from TEAMZYRO import app as Client, user_collection, require_power
 
 
-@Client.on_message(filters.command("GLOG"))
+@Client.on_message(filters.command("transfer"))
 @require_power("VIP")
 async def transfer_collection(client: Client, message: Message):
     try:
