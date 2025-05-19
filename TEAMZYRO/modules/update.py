@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pymongo import ReturnDocument
-from TEAMZYRO import collection, SUDO, app, user_collection
+from TEAMZYRO import collection, SUDO, app, user_collection, require_power
 from TEAMZYRO.unit.zyro_rarity import rarity_map  # Importing rarity_map
 
 SUDO_USERS = SUDO
