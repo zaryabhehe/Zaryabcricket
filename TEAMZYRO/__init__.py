@@ -83,6 +83,7 @@ warned_users = {}
 user_cooldowns = {}
 user_nguess_progress = {}
 user_guess_progress = {}
+normal_message_counts = {}  
 
 # -------------------------- POWER SETUP --------------------------------
 from TEAMZYRO.unit.zyro_ban import *
