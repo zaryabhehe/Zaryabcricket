@@ -28,13 +28,24 @@ def get_uptime():
     return f"{hours}h {minutes}m {seconds}s"
 
 # 🔹 Function to Generate Start Message & Buttons
-async def generate_start_message(client, message):
+async def generate_start_message(client, message, is_group=False):
     bot_user = await client.get_me()
     bot_name = bot_user.first_name
     ping = round(time.time() - message.date.timestamp(), 2)
     uptime = get_uptime()
     
-    caption = f"""🍃 ɢʀᴇᴇᴛɪɴɢs, ɪ'ᴍ {bot_name} 🫧, ɴɪᴄᴇ ᴛᴏ ᴍᴇᴇᴛ ʏᴏᴜ!
+    if is_group:
+        caption = f"""🍃 I'm {bot_name} 🫧
+I spawn waifus in your group for users to grab.
+Tap Help for details."""
+        buttons = [
+            [
+                InlineKeyboardButton("ADD ME", url=f"https://t.me/{bot_user.username}?startgroup=true"),
+                InlineKeyboardButton("SUPPORT", url=SUPPORT_CHAT)
+            ]
+        ]
+    else:
+        caption = f"""🍃 ɢʀᴇᴇᴛɪɴɢs, ɪ'ᴍ {bot_name} 🫧, ɴɪᴄᴇ ᴛᴏ ᴍᴇᴇᴛ ʏᴏᴜ!
 ━━━━━━━▧▣▧━━━━━━━
 ⦾ ᴡʜᴀᴛ ɪ ᴅᴏ: ɪ sᴘᴀᴡɴ   
      ᴡᴀɪғᴜs ɪɴ ʏᴏᴜʀ ᴄʜᴀᴛ ғᴏʀ
@@ -45,31 +56,38 @@ async def generate_start_message(client, message):
 ━━━━━━━▧▣▧━━━━━━━
 ➺ ᴘɪɴɢ: {ping} ms
 ➺ ᴜᴘᴛɪᴍᴇ: {uptime}"""
-
-    buttons = [
-        [InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true")],
-        [InlineKeyboardButton("Support", url=SUPPORT_CHAT), 
-         InlineKeyboardButton("Channel", url=UPDATE_CHAT)],
-        [InlineKeyboardButton("Help", callback_data="open_help")],
-        [InlineKeyboardButton("GitHub", url="https://github.com/MrZyro/ZyroWaifu")]  # GitHub button added here
-    ]
+        buttons = [
+            [InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true")],
+            [InlineKeyboardButton("Support", url=SUPPORT_CHAT), 
+             InlineKeyboardButton("Channel", url=UPDATE_CHAT)],
+            [InlineKeyboardButton("Help", callback_data="open_help")],
+            [InlineKeyboardButton("GitHub", url="https://github.com/MrZyro/ZyroWaifu")]
+        ]
     
     return caption, InlineKeyboardMarkup(buttons)
 
 # 🔹 Start Command Handler
 @app.on_message(filters.command("start"))
 async def start_command(client, message):
-    caption, buttons = await generate_start_message(client, message)
-    video = random.choice(NEXI_VID)  # Random video select karega
-    await app.send_message(
-        chat_id=GLOG,
-        text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
-    )
-    await message.reply_video(
-        video=video,
-        caption=caption,
-        reply_markup=buttons
-    )
+    is_group = message.chat.type in ["group", "supergroup"]
+    caption, buttons = await generate_start_message(client, message, is_group)
+    
+    if not is_group:
+        await app.send_message(
+            chat_id=GLOG,
+            text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+        )
+        video = random.choice(NEXI_VID)
+        await message.reply_video(
+            video=video,
+            caption=caption,
+            reply_markup=buttons
+        )
+    else:
+        await message.reply_text(
+            text=caption,
+            reply_markup=buttons
+        )
 
 # 🔹 Function to Find Help Modules (Optimized for Memory)
 def find_help_modules():
@@ -113,6 +131,7 @@ async def show_help(client, query: CallbackQuery):
 # 🔹 Back to Home (Edit Message Instead of Sending New)
 @app.on_callback_query(filters.regex("^back_to_home$"))
 async def back_to_home(client, query: CallbackQuery):
-    time.sleep(1) 
-    caption, buttons = await generate_start_message(client, query.message)
+    time.sleep(1)
+    is_group = query.message.chat.type in ["group", "supergroup"]
+    caption, buttons = await generate_start_message(client, query.message, is_group)
     await query.message.edit_text(caption, reply_markup=buttons)
