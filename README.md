@@ -1,6 +1,8 @@
 # Welcome to Our Project
 
-Join our Telegram community to stay updated and get support!
+## Quick Deploy to Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 <p align="center">
   <a href="https://t.me/Zyroupdates">
@@ -11,4 +13,3 @@ Join our Telegram community to stay updated and get support!
     <img src="https://img.shields.io/badge/Join%20Channel-Telegram-blue?logo=telegram" alt="Join Telegram Channel">
   </a>
 </p>
-
