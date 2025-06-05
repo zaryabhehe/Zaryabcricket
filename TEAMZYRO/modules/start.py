@@ -4,7 +4,6 @@ import random
 import time
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-
 from TEAMZYRO import *
 from TEAMZYRO.unit.zyro_help import HELP_DATA  
 
@@ -27,25 +26,14 @@ def get_uptime():
     minutes, seconds = divmod(remainder, 60)
     return f"{hours}h {minutes}m {seconds}s"
 
-# 🔹 Function to Generate Start Message & Buttons
-async def generate_start_message(client, message, is_group=False):
+# 🔹 Function to Generate Private Start Message & Buttons
+async def generate_start_message(client, message):
     bot_user = await client.get_me()
     bot_name = bot_user.first_name
     ping = round(time.time() - message.date.timestamp(), 2)
     uptime = get_uptime()
     
-    if is_group:
-        caption = f"""🍃 I'm {bot_name} 🫧
-I spawn waifus in your group for users to grab.
-Tap Help for details."""
-        buttons = [
-            [
-                InlineKeyboardButton("ADD ME", url=f"https://t.me/{bot_user.username}?startgroup=true"),
-                InlineKeyboardButton("SUPPORT", url=SUPPORT_CHAT)
-            ]
-        ]
-    else:
-        caption = f"""🍃 ɢʀᴇᴇᴛɪɴɢs, ɪ'ᴍ {bot_name} 🫧, ɴɪᴄᴇ ᴛᴏ ᴍᴇᴇᴛ ʏᴏᴜ!
+    caption = f"""🍃 ɢʀᴇᴇᴛɪɴɢs, ɪ'ᴍ {bot_name} 🫧, ɴɪᴄᴇ ᴛᴏ ᴍᴇᴇᴛ ʏᴏᴜ!
 ━━━━━━━▧▣▧━━━━━━━
 ⦾ ᴡʜᴀᴛ ɪ ᴅᴏ: ɪ sᴘᴀᴡɴ   
      ᴡᴀɪғᴜs ɪɴ ʏᴏᴜʀ ᴄʜᴀᴛ ғᴏʀ
@@ -56,40 +44,56 @@ Tap Help for details."""
 ━━━━━━━▧▣▧━━━━━━━
 ➺ ᴘɪɴɢ: {ping} ms
 ➺ ᴜᴘᴛɪᴍᴇ: {uptime}"""
-        buttons = [
-            [InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true")],
-            [InlineKeyboardButton("Support", url=SUPPORT_CHAT), 
-             InlineKeyboardButton("Channel", url=UPDATE_CHAT)],
-            [InlineKeyboardButton("Help", callback_data="open_help")],
-            [InlineKeyboardButton("GitHub", url="https://github.com/MrZyro/ZyroWaifu")]
-        ]
+
+    buttons = [
+        [InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true")],
+        [InlineKeyboardButton("Support", url=SUPPORT_CHAT), 
+         InlineKeyboardButton("Channel", url=UPDATE_CHAT)],
+        [InlineKeyboardButton("Help", callback_data="open_help")],
+        [InlineKeyboardButton("GitHub", url="https://github.com/MrZyro/ZyroWaifu")]
+    ]
     
     return caption, InlineKeyboardMarkup(buttons)
 
-# 🔹 Start Command Handler
-@app.on_message(filters.command("start"))
-async def start_command(client, message):
-    is_group = message.chat.type in ["group", "supergroup"]
-    caption, buttons = await generate_start_message(client, message, is_group)
-    
-    if not is_group:
-        await app.send_message(
-            chat_id=GLOG,
-            text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
-        )
-        video = random.choice(NEXI_VID)
-        await message.reply_video(
-            video=video,
-            caption=caption,
-            reply_markup=buttons
-        )
-    else:
-        await message.reply_text(
-            text=caption,
-            reply_markup=buttons
-        )
+# 🔹 Function to Generate Group Start Message & Buttons
+async def generate_group_start_message(client):
+    bot_user = await client.get_me()
+    caption = f"🍃 ɪ'ᴍ {bot_user.first_name} 🫧\nɪ sᴘᴀᴡɴ ᴡᴀɪғᴜs ɪɴ ʏᴏᴜʀ ɢʀᴏᴜᴘ ғᴏʀ ᴜsᴇʀs ᴛᴏ ɢʀᴀʙ.\nᴜsᴇ /help ғᴏʀ ᴍᴏʀᴇ ɪɴғᴏ."
+    buttons = [
+        [
+            InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true"),
+            InlineKeyboardButton("Support Group", url=SUPPORT_CHAT)
+        ]
+    ]
+    return caption, InlineKeyboardMarkup(buttons)
 
-# 🔹 Function to Find Help Modules (Optimized for Memory)
+# 🔹 Private Start Command Handler
+@app.on_message(filters.command("start") & filters.private)
+async def start_private_command(client, message):
+    caption, buttons = await generate_start_message(client, message)
+    video = random.choice(NEXI_VID)
+    await app.send_message(
+        chat_id=GLOG,
+        text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+    )
+    await message.reply_video(
+        video=video,
+        caption=caption,
+        reply_markup=buttons
+    )
+
+# 🔹 Group Start Command Handler
+@app.on_message(filters.command("start") & filters.group)
+async def start_group_command(client, message):
+    caption, buttons = await generate_group_start_message(client)
+    video = random.choice(NEXI_VID)
+    await message.reply_video(
+        video=video,
+        caption=caption,
+        reply_markup=buttons
+    )
+
+# 🔹 Function to Find Help Modules
 def find_help_modules():
     buttons = []
     
@@ -113,7 +117,7 @@ async def show_help_menu(client, query: CallbackQuery):
         reply_markup=InlineKeyboardMarkup(buttons)
     )
 
-# 🔹 Individual Module Help Handler (Optimized)
+# 🔹 Individual Module Help Handler
 @app.on_callback_query(filters.regex(r"^help_(.+)"))
 async def show_help(client, query: CallbackQuery):
     time.sleep(1)
@@ -124,14 +128,14 @@ async def show_help(client, query: CallbackQuery):
         help_text = module_data.get("HELP", "Is module ka koi help nahi hai.")
         buttons = [[InlineKeyboardButton("⬅ Back", callback_data="open_help")]]
         
+        await query()))
         await query.message.edit_text(f"**{module_name} Help:**\n\n{help_text}", reply_markup=InlineKeyboardMarkup(buttons))
     except Exception as e:
         await query.answer("Help load karne me error aayi!")
 
-# 🔹 Back to Home (Edit Message Instead of Sending New)
+# 🔹 Back to Home
 @app.on_callback_query(filters.regex("^back_to_home$"))
 async def back_to_home(client, query: CallbackQuery):
     time.sleep(1)
-    is_group = query.message.chat.type in ["group", "supergroup"]
-    caption, buttons = await generate_start_message(client, query.message, is_group)
+    caption, buttons = await generate_start_message(client, query.message)
     await query.message.edit_text(caption, reply_markup=buttons)
