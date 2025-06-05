@@ -4,21 +4,22 @@ from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filter
 import asyncio
 import time
 
-# Message counters
-normal_message_counts = {}  # Normal chats ke liye count
-
 async def message_counter(update: Update, context: CallbackContext) -> None:
     chat_id = str(update.effective_chat.id)
     user_id = update.effective_user.id
     current_time = time.time()
 
+    # Fetch or initialize group data
     existing_group = await group_user_totals_collection.find_one({"group_id": chat_id})
     if not existing_group:
         await group_user_totals_collection.update_one(
             {"group_id": chat_id}, 
-            {"$set": {"group_id": chat_id}}, 
+            {"$set": {"group_id": chat_id, "ctime": 80}},  # Default ctime
             upsert=True
         )
+        ctime = 80
+    else:
+        ctime = existing_group.get("ctime", 80)  # Use stored ctime or default to 80
 
     if chat_id not in locks:
         locks[chat_id] = asyncio.Lock()
@@ -47,13 +48,13 @@ async def message_counter(update: Update, context: CallbackContext) -> None:
         else:
             last_user[chat_id] = {'user_id': user_id, 'count': 1}
 
-        # Normal chats ke liye 80 messages par ek character bhejna hai
+        # Normal chats ke liye ctime messages par ek character bhejna hai
         if chat_id in normal_message_counts:
             normal_message_counts[chat_id] += 1
         else:
             normal_message_counts[chat_id] = 1
 
-        if normal_message_counts[chat_id] % 80 == 0:
+        if normal_message_counts[chat_id] % ctime == 0:
             await send_image(update, context)
             normal_message_counts[chat_id] = 0  # Reset count
 
