@@ -128,7 +128,6 @@ async def show_help(client, query: CallbackQuery):
         help_text = module_data.get("HELP", "Is module ka koi help nahi hai.")
         buttons = [[InlineKeyboardButton("⬅ Back", callback_data="open_help")]]
         
-        await query()))
         await query.message.edit_text(f"**{module_name} Help:**\n\n{help_text}", reply_markup=InlineKeyboardMarkup(buttons))
     except Exception as e:
         await query.answer("Help load karne me error aayi!")
