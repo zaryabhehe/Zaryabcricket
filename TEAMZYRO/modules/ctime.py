@@ -1,5 +1,5 @@
 from pyrogram import Client, filters
-from pyrogram.types import ChatMemberStatus
+from pyrogram.enums import ChatMemberStatus
 from TEAMZYRO import group_user_totals_collection, app, OWNER_ID
 
 @app.on_message(filters.command("ctime") & filters.group)
