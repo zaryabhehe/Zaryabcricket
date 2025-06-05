@@ -46,11 +46,11 @@ async def generate_start_message(client, message):
 ➺ ᴜᴘᴛɪᴍᴇ: {uptime}"""
 
     buttons = [
-        [InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true")],
-        [InlineKeyboardButton("Support", url=SUPPORT_CHAT), 
-         InlineKeyboardButton("Channel", url=UPDATE_CHAT)],
-        [InlineKeyboardButton("Help", callback_data="open_help")],
-        [InlineKeyboardButton("GitHub", url="https://github.com/MrZyro/ZyroWaifu")]
+        [InlineKeyboardButton("Aᴅᴅ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ", url=f"https://t.me/{bot_user.username}?startgroup=true")],
+        [InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url=SUPPORT_CHAT), 
+         InlineKeyboardButton("Cʜᴀɴɴᴇʟ", url=UPDATE_CHAT)],
+        [InlineKeyboardButton("Hᴇʟᴘ", callback_data="open_help")],
+        [InlineKeyboardButton("Gɪᴛʜᴜʙ", url="https://github.com/MrZyro/ZyroWaifu")]
     ]
     
     return caption, InlineKeyboardMarkup(buttons)
@@ -61,8 +61,8 @@ async def generate_group_start_message(client):
     caption = f"🍃 ɪ'ᴍ {bot_user.first_name} 🫧\nɪ sᴘᴀᴡɴ ᴡᴀɪғᴜs ɪɴ ʏᴏᴜʀ ɢʀᴏᴜᴘ ғᴏʀ ᴜsᴇʀs ᴛᴏ ɢʀᴀʙ.\nᴜsᴇ /help ғᴏʀ ᴍᴏʀᴇ ɪɴғᴏ."
     buttons = [
         [
-            InlineKeyboardButton("Add to Your Group", url=f"https://t.me/{bot_user.username}?startgroup=true"),
-            InlineKeyboardButton("Support Group", url=SUPPORT_CHAT)
+            InlineKeyboardButton("Aᴅᴅ Mᴇ", url=f"https://t.me/{bot_user.username}?startgroup=true"),
+            InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url=SUPPORT_CHAT)
         ]
     ]
     return caption, InlineKeyboardMarkup(buttons)
