@@ -8,8 +8,9 @@ from telegram.ext import InlineQueryHandler, CallbackContext
 from TEAMZYRO import application
 from TEAMZYRO.unit.zyro_inline import *
 
-# Start change stream watcher
-asyncio.create_task(watch_for_changes())
+async def on_startup(app: Application):
+    """Start the change stream watcher when bot starts"""
+    asyncio.create_task(watch_for_changes())
 
 async def inlinequery(update: Update, context: CallbackContext) -> None:
     query = update.inline_query.query.strip()
@@ -103,3 +104,6 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
 
 # Register handler
 application.add_handler(InlineQueryHandler(inlinequery, block=False))
+application.add_handler(Application.POST_INIT, on_startup)
+
+
