@@ -104,6 +104,12 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
 
 # Register handler
 application.add_handler(InlineQueryHandler(inlinequery, block=False))
-application.add_handler(Application.POST_INIT, on_startup)
 
 
+if not hasattr(application, '_post_init'):
+    # First time initialization
+    application._post_init = True
+    application.create_task = asyncio.create_task
+    
+    # Add startup handler
+    application.job_queue.run_once(lambda ctx: on_startup(application), when=0)
