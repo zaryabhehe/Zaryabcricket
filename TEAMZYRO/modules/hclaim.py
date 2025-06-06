@@ -48,9 +48,9 @@ async def mclaim(_, message: t.Message):
     try:
         # Ensure the user is in the correct chat
         if str(message.chat.id) != chat:
-            join_button = InlineKeyboardMarkup([[InlineKeyboardButton("Join Here", url="https://t.me/family_of_elites")]])
+            join_button = InlineKeyboardMarkup([[InlineKeyboardButton("Join Here", url="https://t.me/+WaK_ZLKBKvU3YzI9")]])
             return await message.reply_text(
-                "🔔 ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴄʟᴀɪᴍ ʏᴏᴜʀ �ᴀɪʟʏ ᴄʜᴀʀᴀᴄᴛᴇʀ 🔔",
+                "🔔 ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴄʟᴀɪᴍ ʏᴏᴜʀ ᴅᴀɪʟʏ ᴄʜᴀʀᴀᴄᴛᴇʀ 🔔",
                 reply_markup=join_button
             )
 
@@ -88,11 +88,11 @@ async def mclaim(_, message: t.Message):
             await message.reply_photo(
                 photo=character['img_url'],
                 caption=(
-                    f"🎊 ℂ𝕆ℕ�ℝ�𝕋𝕌𝕃𝔸𝕋𝕀𝕆ℕ {mention}! 🎉\n"
+                    f"🎊 ℂ𝕆ℕ𝔾ℝ𝔸𝕋𝕌𝕃𝔸𝕋𝕀𝕆ℕ𝕊 {mention}! 🎉\n"
                     f"🌸 𝐍𝐚𝐦𝐞 : {character['name']}\n"
                     f"🌈 𝐑𝐚𝐫𝐢𝐭𝐲 : {character['rarity']}\n"
                     f"⛩️ 𝐀𝐧𝐢𝐦𝐞 : {character['anime']}\n"
-                    f"💫 ℭ𝔬𝔪𝔢 𝔟𝔞�𝔨 𝔱𝔬𝔪𝔬�𝔯𝔯𝔬� 𝔣𝔬𝔯 𝔞𝔫𝔬𝔱𝔥𝔢𝔯 𝔠𝔩𝔞𝔦𝔪!"
+                    f"💫 ℭ𝔬𝔪𝔢 𝔟𝔞𝔠𝔨 𝔱𝔬𝔪𝔬𝔯𝔯𝔬𝔴 𝔣𝔬𝔯 𝔞𝔫𝔬𝔱𝔥𝔢𝔯 𝔠𝔩𝔞𝔦𝔪!"
                 )
             )
 
