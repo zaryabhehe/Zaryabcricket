@@ -7,16 +7,6 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQ
 from TEAMZYRO import *
 from TEAMZYRO.unit.zyro_help import HELP_DATA  
 
-NEXI_VID = [
-    "https://telegra.ph/file/1a3c152717eb9d2e94dc2.mp4",
-    "https://graph.org/file/ba7699c28dab379b518ca.mp4",
-    "https://graph.org/file/83ebf52e8bbf138620de7.mp4",
-    "https://graph.org/file/82fd67aa56eb1b299e08d.mp4",
-    "https://graph.org/file/318eac81e3d4667edcb77.mp4",
-    "https://graph.org/file/7c1aa59649fbf3ab422da.mp4",
-    "https://graph.org/file/2a7f857f31b32766ac6fc.mp4",
-]
-
 # 🔹 Function to Calculate Uptime
 START_TIME = time.time()
 
@@ -70,28 +60,61 @@ async def generate_group_start_message(client):
 # 🔹 Private Start Command Handler
 @app.on_message(filters.command("start") & filters.private)
 async def start_private_command(client, message):
+    # Check if user exists in user_collection
+    existing_user = await user_collection.find_one({"id": message.from_user.id})
+    
+    # Save user data only if they don't exist in the collection
+    if not existing_user:
+        user_data = {
+            "id": message.from_user.id,
+            "username": message.from_user.username,
+            "first_name": message.from_user.first_name,
+            "last_name": message.from_user.last_name,
+            "start_time": time.time()
+        }
+        await user_collection.insert_one(user_data)
+
     caption, buttons = await generate_start_message(client, message)
-    video = random.choice(NEXI_VID)
+    media = random.choice(START_MEDIA)
+    
     await app.send_message(
         chat_id=GLOG,
         text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
     )
-    await message.reply_video(
-        video=video,
-        caption=caption,
-        reply_markup=buttons
-    )
+    
+    # Check if media is image or video based on extension
+    if media.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+        await message.reply_photo(
+            photo=media,
+            caption=caption,
+            reply_markup=buttons
+        )
+    else:
+        await message.reply_video(
+            video=media,
+            caption=caption,
+            reply_markup=buttons
+        )
 
 # 🔹 Group Start Command Handler
 @app.on_message(filters.command("start") & filters.group)
 async def start_group_command(client, message):
     caption, buttons = await generate_group_start_message(client)
-    video = random.choice(NEXI_VID)
-    await message.reply_video(
-        video=video,
-        caption=caption,
-        reply_markup=buttons
-    )
+    media = random.choice(START_MEDIA)
+    
+    # Check if media is image or video based on extension
+    if media.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+        await message.reply_photo(
+            photo=media,
+            caption=caption,
+            reply_markup=buttons
+        )
+    else:
+        await message.reply_video(
+            video=media,
+            caption=caption,
+            reply_markup=buttons
+        )
 
 # 🔹 Function to Find Help Modules
 def find_help_modules():
