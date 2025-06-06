@@ -3,7 +3,7 @@ from pyrogram import Client, filters, types as t
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime, timedelta
 from TEAMZYRO import ZYRO as bot
-from TEAMZYRO import user_collection, collection, SUPPORT_CHAT_ID as chat
+from TEAMZYRO import user_collection, collection, SUPPORT_CHAT_ID as chat, SUPPORT_CHAT
 
 async def get_unique_characters(user_id, target_rarities):
     try:
@@ -30,7 +30,7 @@ async def valentine(_, message: t.Message):
 
         if str(message.chat.id) != chat:
             join_button = InlineKeyboardMarkup([
-                [InlineKeyboardButton("Join Here", url="https://t.me/TEAMZYRO")]
+                [InlineKeyboardButton("Join Here", url=SUPPORT_CHAT)]
             ])
             return await message.reply_text(
                 "🔔 ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴄʟᴀɪᴍ ʏᴏᴜʀ ᴅᴀɪʟʏ ᴄʜᴀʀᴀᴄᴛᴇʀ",
