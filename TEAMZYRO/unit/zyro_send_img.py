@@ -91,7 +91,8 @@ async def send_image(update: Update, context: CallbackContext) -> None:
             caption=f"""✨ A {selected_character['rarity']} Character Appears! ✨
 🔍 Use /guess to claim this mysterious character!
 💫 Hurry, before someone else snatches them!""",
-            parse_mode='Markdown'
+            parse_mode='Markdown',
+            has_spoiler=True
         )
     else:
         sent_message = await context.bot.send_photo(
@@ -100,7 +101,8 @@ async def send_image(update: Update, context: CallbackContext) -> None:
             caption=f"""✨ A {selected_character['rarity']} Character Appears! ✨
 🔍 Use /guess to claim this mysterious character!
 💫 Hurry, before someone else snatches them!""",
-            parse_mode='Markdown'
+            parse_mode='Markdown',
+            has_spoiler=True
         )
         
     last_characters[chat_id]['message_id'] = sent_message.message_id
