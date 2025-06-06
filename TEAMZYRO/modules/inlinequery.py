@@ -4,7 +4,7 @@ import asyncio
 from html import escape
 from cachetools import TTLCache
 from telegram import Update, InlineQueryResultPhoto, InlineQueryResultVideo
-from telegram.ext import InlineQueryHandler, CallbackContext
+from telegram.ext import InlineQueryHandler, CallbackContext, Application
 from TEAMZYRO import application
 from TEAMZYRO.unit.zyro_inline import *
 
