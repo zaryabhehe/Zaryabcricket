@@ -3,9 +3,9 @@ from cachetools import TTLCache
 from pymongo import MongoClient
 from TEAMZYRO import user_collection, collection
 
-# Caching with shorter TTL for better freshness
+# Caching configuration
 all_characters_cache = TTLCache(maxsize=10000, ttl=300)  # 5 minutes
-user_collection_cache = TTLCache(maxsize=10000, ttl=30)   # 30 seconds
+user_collection_cache = TTLCache(maxsize=10000, ttl=30)  # 30 seconds
 
 async def get_user_collection(user_id, force_refresh=False):
     """Get user collection with cache control"""
@@ -41,24 +41,16 @@ async def get_all_characters(force_refresh=False):
     return characters
 
 async def watch_for_changes():
-    """MongoDB change stream for real-time updates"""
+    """MongoDB change stream watcher"""
     client = MongoClient('your_mongo_connection_string')
-    pipeline = [{'$match': {'operationType': {'$in': ['insert', 'update', 'delete']}}}]
-    
     try:
-        with client.watch(pipeline) as stream:
+        with client.watch() as stream:
             for change in stream:
                 # Clear relevant caches when changes occur
                 if 'all_characters' in all_characters_cache:
                     del all_characters_cache['all_characters']
-                
-                # Clear search caches if document was modified
-                if 'documentKey' in change:
-                    doc_id = str(change['documentKey']['_id'])
-                    for key in list(all_characters_cache.keys()):
-                        if key.startswith('search_'):
-                            del all_characters_cache[key]
-                
-                print(f"Database change detected - caches cleared: {change['operationType']}")
+                print("Database updated - cache cleared")
     except Exception as e:
         print(f"Change stream error: {e}")
+    finally:
+        client.close()
