@@ -75,19 +75,20 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
                 user_character_count = sum(1 for char in user.get('characters', []) 
                                       if char.get('id') == character['id'])
                 caption = (
-                    f"<b>👤 {escape(user.get('first_name', 'User'))}'s collection:</b>\n\n"
+                    f"<b>👤 Look At {escape(user.get('first_name', 'User'))}'s Collection:</b>\n"
                     f"🌸 <b>{escape(character['name'])} (x{user_character_count})</b>\n"
-                    f"🏖️ From: <b>{escape(character['anime'])}</b>\n"
-                    f"🔮 Rarity: <b>{escape(character['rarity'])}</b>\n"
-                    f"🆔 <code>{escape(str(character['id']))}</code>\n"
+                    f"<b>🏖️ From: {escape(character['anime'])}</b>\n"
+                    f"<b>🔮 Rarity: {escape(character['rarity'])}</b>\n"
+                    f"<b>🆔 <code>{escape(str(character['id']))}</code></b>\n"
                 )
             else:
                 caption = (
-                    f"<b>Character:</b>\n\n"
+                    f"<b>Character Details:</b>\n\n"
                     f"🌸 <b>{escape(character['name'])}</b>\n"
-                    f"🏖️ From: <b>{escape(character['anime'])}</b>\n"
-                    f"🔮 Rarity: <b>{escape(character['rarity'])}</b>\n"
-                    f"🆔 <code>{escape(str(character['id']))}</code>\n"
+                    f"<b>🏖️ From: {escape(character['anime'])}</b>\n"
+                    f"<b>🔮 Rarity: {escape(character['rarity'])}</b>\n"
+                    f"<b>🆔 <code>{escape(str(character['id']))}</code></b>\n"
+                    
                 )
 
             # Add result based on media type
