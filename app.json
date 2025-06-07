@@ -70,10 +70,10 @@
       "required": true
     }
   },
-    "buildpacks": [
-          {
-              "url": "heroku/python"
-          }
-      ],
-      "stack": "container"
-  }
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "stack": "container"
+}
