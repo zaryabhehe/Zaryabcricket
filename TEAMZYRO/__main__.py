@@ -11,10 +11,11 @@ def main() -> None:
 
     ZYRO.start()
     application.run_polling(drop_pending_updates=True)
-    send_start_message()
     LOGGER("TEAMZYRO").info(
         "╔═════ஜ۩۞۩ஜ════╗\n  ☠︎︎MADE BY TEAMZYRO☠︎︎\n╚═════ஜ۩۞۩ஜ════╝"
     )
+    send_start_message()
+    
 
 if __name__ == "__main__":
     main()
