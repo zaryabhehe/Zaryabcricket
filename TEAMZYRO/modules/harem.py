@@ -8,7 +8,7 @@ import random
 from pyrogram import enums
 from pyrogram.types import Message
 from pyrogram.errors import ChatAdminRequired, UserNotParticipant, ChatWriteForbidden
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from zyro_rarity import rarity_map2
 
 async def fetch_user_characters(user_id):
     user = await user_collection.find_one({"id": user_id})
@@ -23,7 +23,6 @@ import asyncio  # Import asyncio for sleep function
 
 @app.on_message(filters.command(["harem", "collection"]))
 async def harem_handler(client, message):
-    
     user_id = message.from_user.id
     page = 0
     user = await user_collection.find_one({"id": user_id})
@@ -40,6 +39,10 @@ async def display_harem(client, message, user_id, page, filter_rarity, is_initia
         if error:
             await message.reply_text(error)
             return
+
+        # Calculate total and AMV character counts
+        total_characters = len(characters)
+        amv_characters = len([c for c in characters if 'vid_url' in c])
 
         # Sort characters by anime and ID
         characters = sorted(characters, key=lambda x: (x.get('anime', ''), x.get('id', '')))
@@ -86,11 +89,11 @@ async def display_harem(client, message, user_id, page, filter_rarity, is_initia
                 rarity_emoji = rarity_map2.get(character.get('rarity'), '')
                 harem_message += f'◈⌠{rarity_emoji}⌡ {character["id"]} {character["name"]} ×{count}\n'
 
-        # Add inline buttons for collection and video-only collection
+        # Add inline buttons for collection and video-only collection with counts
         keyboard = [
             [
-                InlineKeyboardButton("Collection", switch_inline_query_current_chat=f"collection.{user_id}"),
-                InlineKeyboardButton("💌 AMV", switch_inline_query_current_chat=f"collection.{user_id}.AMV")
+                InlineKeyboardButton(f"Collection ({total_characters})", switch_inline_query_current_chat=f"collection.{user_id}"),
+                InlineKeyboardButton(f"💌 AMV ({amv_characters})", switch_inline_query_current_chat=f"collection.{user_id}.AMV")
             ]
         ]
 
@@ -236,6 +239,3 @@ async def set_rarity_callback(client, callback_query):
         await callback_query.answer(f"Rarity filter set to {filter_rarity if filter_rarity else 'All'}", show_alert=True)
     except Exception as e:
         print(f"Error in set_rarity callback: {e}")
-
-
-
