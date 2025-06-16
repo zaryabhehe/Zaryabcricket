@@ -40,6 +40,8 @@ PHOTO_URL = [
     os.getenv("PHOTO_URL_2", "https://files.catbox.moe/7ccoub.jpg")
 ]
 
+STATS_IMG = ["https://files.catbox.moe/gknnju.jpg"] 
+
 SUPPORT_CHAT = os.getenv("SUPPORT_CHAT", "https://t.me/Zyroupdates")
 UPDATE_CHAT = os.getenv("UPDATE_CHAT", "https://t.me/ZyroBotCodes")
 SUDO = list(map(int, os.getenv("SUDO", "7577185215,5749187175").split(',')))
