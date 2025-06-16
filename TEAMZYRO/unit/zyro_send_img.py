@@ -66,6 +66,8 @@ async def send_image(update: Update, context: CallbackContext) -> None:
         selected_character = random.choice(available_characters)
 
     # Clear first_correct_guesses if exists
+    last_characters[chat_id] = character
+    
     if chat_id in first_correct_guesses:
         del first_correct_guesses[chat_id]
 
