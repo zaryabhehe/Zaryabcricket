@@ -8,7 +8,6 @@ import random
 from pyrogram import enums
 from pyrogram.types import Message
 from pyrogram.errors import ChatAdminRequired, UserNotParticipant, ChatWriteForbidden
-from zyro_rarity import rarity_map2
 
 async def fetch_user_characters(user_id):
     user = await user_collection.find_one({"id": user_id})
