@@ -1,10 +1,8 @@
-
 from TEAMZYRO import *
 import random
 import asyncio
 from telegram import Update
 from telegram.ext import CallbackContext
-
 
 log = "-1002155818429"
 
@@ -33,7 +31,12 @@ RARITY_WEIGHTS = {
 async def send_image(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
 
+    # Fetch all characters from MongoDB every time
     all_characters = list(await collection.find({}).to_list(length=None))
+
+    if not all_characters:
+        await context.bot.send_message(chat_id, "No characters found in the database.")
+        return
 
     if chat_id not in sent_characters:
         sent_characters[chat_id] = []
@@ -44,14 +47,14 @@ async def send_image(update: Update, context: CallbackContext) -> None:
     if chat_id in last_characters and last_characters[chat_id].get('ranaway', False):
         del last_characters[chat_id]
 
-    if 'available_characters' not in context.user_data:
-        context.user_data['available_characters'] = [
-            c for c in all_characters 
-            if 'id' in c 
-            and c['id'] not in sent_characters.get(chat_id, [])
-            and c.get('rarity') is not None 
-            and RARITY_WEIGHTS.get(c['rarity'], (0, False))[1]  # True wali rarities allow
-        ]
+    # Refresh available characters from MongoDB
+    context.user_data['available_characters'] = [
+        c for c in all_characters 
+        if 'id' in c 
+        and c['id'] not in sent_characters.get(chat_id, [])
+        and c.get('rarity') is not None 
+        and RARITY_WEIGHTS.get(c['rarity'], (0, False))[1]  # True wali rarities allow
+    ]
 
     available_characters = context.user_data['available_characters']
 
@@ -92,7 +95,6 @@ async def send_image(update: Update, context: CallbackContext) -> None:
 🔍 Use /guess to claim this mysterious character!
 💫 Hurry, before someone else snatches them!""",
             parse_mode='Markdown'
-           
         )
     else:
         sent_message = await context.bot.send_photo(
@@ -102,14 +104,9 @@ async def send_image(update: Update, context: CallbackContext) -> None:
 🔍 Use /guess to claim this mysterious character!
 💫 Hurry, before someone else snatches them!""",
             parse_mode='Markdown'
-            
         )
         
     last_characters[chat_id]['message_id'] = sent_message.message_id
 
     # Schedule message deletion after 5 minutes
     asyncio.create_task(delete_message(chat_id, sent_message.message_id, context))
-
-    asyncio.create_task(delete_message(chat_id, sent_message.message_id, context))
-
-
