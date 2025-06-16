@@ -1,4 +1,13 @@
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+</p>
+
 ![Image](https://files.catbox.moe/gknnju.jpg)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+</p>
 
 ## WAIFU & HUSBANDO CATCHER
 
@@ -13,3 +22,6 @@
     <img src="https://img.shields.io/badge/Join%20Channel-Telegram-blue?logo=telegram" alt="Join Telegram Channel">
   </a>
 </p>
+
+
+
