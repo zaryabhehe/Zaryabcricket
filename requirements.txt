@@ -21,12 +21,12 @@ aiofiles
 yt_dlp
 telethon
 #dnspython==2.2.1
-
 #psutil==5.9.4
 #pyromod==1.5
-pyrogram==2.0.106
+#pyrogram==2.0.106
 python-dotenv==0.21.0
 telethon==1.26.1
 TgCrypto==1.2.5
 nltk
 cloudscraper
+git+https://github.com/MrZyro/pyrogram.git

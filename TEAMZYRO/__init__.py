@@ -4,6 +4,7 @@ import os
 from telegram.ext import Application
 from motor.motor_asyncio import AsyncIOMotorClient
 from pyrogram import Client, filters as f
+from pyrogram.types import x
 
 # --------------------------- LOGGING SETUP ------------------------------
 logging.basicConfig(
@@ -31,6 +32,8 @@ GLOG = os.getenv("GLOG", "Zlog12")
 CHARA_CHANNEL_ID = os.getenv("CHARA_CHANNEL_ID", "Zlog12")
 SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "-1002309742084")
 mongo_url = os.getenv("MONGO_URL", "mongodb+srv://Alisha:Alisha123@cluster0.yqcpftw.mongodb.net/?retryWrites=true&w=majority")
+
+MUSJ_JOIN = os.getenv("MUSJ_JOIN", "username")
 
 # Modified to support both image and video URLs
 START_MEDIA = os.getenv("START_MEDIA", "https://files.catbox.moe/7ccoub.jpg,https://telegra.ph/file/1a3c152717eb9d2e94dc2.mp4").split(',')
@@ -69,7 +72,7 @@ app = ZYRO
 sudo_users = SUDO
 collection = destination_char
 user_collection = destination_collection
-
+x = x
 # --------------------------- STRIN ---------------------------------------
 locks = {}
 message_counters = {}
