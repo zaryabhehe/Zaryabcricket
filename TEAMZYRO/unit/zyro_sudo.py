@@ -25,7 +25,7 @@ def require_power(required_power):
                 # This is a callback query, not a regular message
                 user_id = message.from_user.id
                 # If the user is the owner or an instance of Owner, bypass the power check
-                if user_id == OWNER_ID or isinstance(user_id, Owner):
+                if user_id == OWNER_ID or isinstance(user_id, x):
                     return await func(client, message, *args, **kwargs)
 
                 # Otherwise, check if the user has the required power
@@ -39,7 +39,7 @@ def require_power(required_power):
             # Regular message handling
             user_id = message.from_user.id
             # If the user is the owner or an instance of Owner, bypass the power check
-            if user_id == OWNER_ID or isinstance(user_id, Owner):
+            if user_id == OWNER_ID or isinstance(user_id, x):
                 return await func(client, message, *args, **kwargs)
 
             # Otherwise, check if the user has the required power
