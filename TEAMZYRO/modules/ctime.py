@@ -22,12 +22,16 @@ async def is_admin(client: Client, chat_id: int, user_id: int) -> bool:
 async def set_ctime(client, message):
     chat_id = message.chat.id
     user_id = message.from_user.id
-    
-    # Check if user is admin or owner
-    is_admin_user = await is_admin(client, chat_id, user_id)
-    is_owner = user_id == OWNER_ID
 
-    if not (is_admin_user or is_owner):
+    # Bot owner bypasses admin check
+    if user_id == OWNER_ID:
+        is_owner = True
+        is_admin_user = False  # Not needed, but for clarity
+    else:
+        is_owner = False
+        is_admin_user = await is_admin(client, chat_id, user_id)
+
+    if not (is_owner or is_admin_user):
         await message.reply("⚠️ Only group admins!")
         return
 
