@@ -86,13 +86,8 @@ async def gift(client, message):
 
     # Prepare character details for caption
     caption = (
-        f"🎁 <b>Gift Character</b>\n\n"
+        f"🎁 <b>Gift Character</b>\n"
         f"🌸 <b>{character.get('name', 'Unknown')}</b>\n"
-        f"🏖️ <b>From:</b> {character.get('anime', 'Unknown')}\n"
-        f"🔮 <b>Rarity:</b> {character.get('rarity', 'Unknown')}\n"
-        f"🆔 <code>{character.get('id')}</code>\n\n"
-        f"Do you really want to gift this character to "
-        f"<a href='tg://user?id={receiver_id}'>{receiver_first_name}</a>?"
     )
 
     # Send the character image with caption and buttons
