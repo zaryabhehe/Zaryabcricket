@@ -90,7 +90,7 @@ async def stats_handler(client: Client, message: Message):
     # Add rarity counts
     for rarity, count in stats['rarity_counts'].items():
         emoji = rarity_map2.get(rarity, '❍')
-        stats_message += f"  ❍ {emoji} {rarity} ➥ {count}\n"
+        stats_message += f"  ❍ {rarity} ➥ {count}\n"
     
     stats_message += "━━━━━━━━━━━━━━━━━━━━━"
     
