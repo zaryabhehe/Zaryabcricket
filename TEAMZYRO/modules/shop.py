@@ -38,25 +38,25 @@ async def show_shop(client, message):
     characters = await characters_cursor.to_list(length=None)
 
     if not characters:
-        await message.reply("🌌 The Cosmic Bazaar is empty! No legendary characters await you yet.")
+        await message.reply("🌌 The Cosmic Bazaar is empty! No legendary heroes are available yet.")
         return
 
     current_index = 0
     character = characters[current_index]
 
     caption_message = (
-        f"🌟 **Step into the Cosmic Bazaar!** 🌟\n\n"
+        f"🌟 **Welcome to the Cosmic Bazaar!** 🌟\n\n"
         f"**Hero:** {character['name']}\n"
         f"**Realm:** {character['anime']}\n"
         f"**Legend Tier:** {character['rarity']}\n"
         f"**Cost:** {character['price']} Star Coins\n"
-        f"**ID:** {character['id']}\n"
-        f"✨ Unleash Epic Legends in Your Collection! ✨"
+        f"**ID:** {character['id']}\n\n"
+        f"✨ Summon this epic hero to join your cosmic collection! ✨"
     )
 
     keyboard = [
-        [InlineKeyboardButton("Claim Now!", callback_data=f"buy_{current_index}"),
-         InlineKeyboardButton("Next Legend", callback_data="next")]
+        [InlineKeyboardButton("Claim Hero!", callback_data=f"buy_{current_index}"),
+         InlineKeyboardButton("Next Hero", callback_data="next")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -77,14 +77,14 @@ async def buy_character(client, callback_query):
     characters = await characters_cursor.to_list(length=None)
 
     if current_index >= len(characters):
-        await callback_query.answer("🚫 This legend has vanished from the Bazaar!", show_alert=True)
+        await callback_query.answer("🚫 This hero has vanished from the Cosmic Bazaar!", show_alert=True)
         return
 
     character = characters[current_index]
 
     user = await user_collection.find_one({"id": user_id})
     if not user:
-        await callback_query.answer("🚫 Traveler, you must register your presence in the Cosmos!", show_alert=True)
+        await callback_query.answer("🚫 Traveler, you must register in the Cosmos to claim heroes!", show_alert=True)
         return
 
     price = character['price']
@@ -92,7 +92,7 @@ async def buy_character(client, callback_query):
 
     if current_balance < price:
         await callback_query.answer(
-            f"🌠 You need {price - current_balance} more Star Coins to claim this legend!",
+            f"🌠 You need {price - current_balance} more Star Coins to claim this hero!",
             show_alert=True
         )
         return
@@ -113,7 +113,7 @@ async def buy_character(client, callback_query):
         {"$set": {"balance": new_balance, "characters": user["characters"]}}
     )
 
-    await callback_query.answer("🎉 Legend claimed! Welcome your new hero to the Cosmos!")
+    await callback_query.answer("🎉 Hero claimed! Your new legend joins the Cosmos!")
 
 @app.on_callback_query(filters.regex("^next$"))
 async def next_item(client, callback_query):
@@ -126,25 +126,25 @@ async def next_item(client, callback_query):
     characters = await characters_cursor.to_list(length=None)
 
     if not characters:
-        await callback_query.answer("🌌 The Cosmic Bazaar holds no more legends!", show_alert=True)
+        await callback_query.answer("🌌 No more heroes remain in the Cosmic Bazaar!", show_alert=True)
         return
 
     next_index = (current_index + 1) % len(characters)
     character = characters[next_index]
 
     caption_message = (
-        f"🌟 **Explore the Cosmic Bazaar!** 🌟\n\n"
+        f"🌟 **Discover the Cosmic Bazaar!** 🌟\n\n"
         f"**Hero:** {character['name']}\n"
         f"**Realm:** {character['anime']}\n"
         f"**Legend Tier:** {character['rarity']}\n"
         f"**Cost:** {character['price']} Star Coins\n"
-        f"**ID:** {character['id']}\n"
-        f"✨ Summon Epic Legends to Your Collection! ✨"
+        f"**ID:** {character['id']}\n\n"
+        f"✨ Add this legendary hero to your cosmic collection! ✨"
     )
 
     keyboard = [
-        [InlineKeyboardButton("Claim Now!", callback_data=f"buy_{next_index}"),
-         InlineKeyboardButton("Next Legend", callback_data="next")]
+        [InlineKeyboardButton("Claim Hero!", callback_data=f"buy_{next_index}"),
+         InlineKeyboardButton("Next Hero", callback_data="next")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -163,7 +163,7 @@ async def add_to_shop(client, message):
     args = message.text.split()[1:]
 
     if len(args) != 2:
-        await message.reply("🌌 Usage: /addshop <id> <price> to add a legend to the Bazaar!")
+        await message.reply("🌌 Usage: /addshop <id> <price> to add a hero to the Cosmic Bazaar!")
         return
 
     character_id, price = args
@@ -176,10 +176,29 @@ async def add_to_shop(client, message):
 
     character = await collection.find_one({"id": character_id})
     if not character:
-        await message.reply("🚫 This legend doesn't exist in the Cosmos!")
+        await message.reply("🚫 This hero doesn't exist in the Cosmos!")
         return
 
     character["price"] = price
     await shops_collection.insert_one(character)
 
-    await message.reply(f"🎉 {character['name']} has joined the Cosmic Bazaar for {price} Star Coins!")
+    await message.reply(f"🎉 {character['name']} has been added to the Cosmic Bazaar for {price} Star Coins!")
+
+@app.on_message(filters.command("removeshop"))
+@require_power("remove_character")
+async def remove_from_shop(client, message):
+    args = message.text.split()[1:]
+
+    if len(args) != 1:
+        await message.reply("🌌 Usage: /removeshop <id> to remove a hero from the Cosmic Bazaar!")
+        return
+
+    character_id = args[0]
+
+    character = await shops_collection.find_one({"id": character_id})
+    if not character:
+        await message.reply("🚫 This hero is not in the Cosmic Bazaar!")
+        return
+
+    await shops_collection.delete_one({"id": character_id})
+    await message.reply(f"🌠 {character['name']} has been removed from the Cosmic Bazaar!")
