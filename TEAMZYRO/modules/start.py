@@ -39,6 +39,7 @@ async def generate_start_message(client, message):
         [InlineKeyboardButton("Aᴅᴅ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ", url=f"https://t.me/{bot_user.username}?startgroup=true")],
         [InlineKeyboardButton("Sᴜᴘᴘᴏʀᴛ", url=SUPPORT_CHAT), 
          InlineKeyboardButton("Cʜᴀɴɴᴇʟ", url=UPDATE_CHAT)],
+        [InlineKeyboardButton("bot admins", callback_data="about_sudo")],
         [InlineKeyboardButton("Hᴇʟᴘ", callback_data="open_help")],
         [InlineKeyboardButton("Gɪᴛʜᴜʙ", url="https://github.com/MrZyro/ZyroWaifu")]
     ]
